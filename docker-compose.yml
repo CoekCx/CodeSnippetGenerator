@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  renderer-service:
+    build: ./renderer-service
+    ports:
+      - "3000:3000"
+    volumes:
+      - ${OUTPUT_DIR:-./output}:/output
+    restart: unless-stopped
+
+  generator-service:
+    build: ./generator-service
+    env_file:
+      - ./generator-service/src/.env
+    environment:
+      - RENDERER_SERVICE_URL=http://renderer-service:3000
+      - OUTPUT_DIR=${OUTPUT_DIR:-./output}
+      - DOCKER_ENV=true
+    volumes:
+      - ${OUTPUT_DIR:-./output}:/output
+    depends_on:
+      - renderer-service 

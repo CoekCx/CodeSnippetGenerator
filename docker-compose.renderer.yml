@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  renderer-service:
+    build: ./renderer-service
+    ports:
+      - "3000:3000"
+    volumes:
+      - "D:/Coek/Work/Social Media Nikola:/output"
+    restart: unless-stopped 
