@@ -1,6 +1,11 @@
-import os
+"""
+DEPRECATED: This file is no longer in use and will be removed in a future version.
+"""
 
-from prompt_toolkit.shortcuts import button_dialog
+import os
+import threading
+import warnings
+from http.server import SimpleHTTPRequestHandler, HTTPServer
 
 from config.constants import menu_text
 from config.prompts import (
@@ -13,26 +18,51 @@ from config.prompts import (
 )
 from core.code_classifier import parse_code
 from generators.html_generator import HtmlGenerator
+from generators.image_generator import generate_image_with_selenium
+from prompt_toolkit.shortcuts import button_dialog
 from utils.file_handler import FileHandler
 
+warnings.warn(
+    "The module 'image_generator' is deprecated and will be removed in a future version.",
+    DeprecationWarning,
+    stacklevel=2
+)
 
-def generate_image_logic(code_snippet: str, file_name: str, code_path: str):
+
+# Function to run the HTTP server
+def run_server():
+    """
+    Starts a simple HTTP server, on port 55003, that serves files from the current
+    directory. The server runs indefinitely until manually terminated.
+    
+    Returns:
+        None: The function blocks while the server is running
+    """
+    port = 55003
+    handler = SimpleHTTPRequestHandler
+    with HTTPServer(("", port), handler) as httpd:
+        print(f"Server started at port {port}")
+        httpd.serve_forever()
+
+
+def generate_image_logic(code_snippet: str, img_name: str, img_path: str):
     """
     Generates an image from a code snippet.
     
     Args:
         code_snippet (str): The source code to convert to an image
-        file_name (str): The file name (without extension)
-        code_path (str): The directory path where the code file is stored at
+        img_name (str): The filename for the output image (without extension)
+        img_path (str): The directory path where the image will be saved
         
     Returns:
         None: The function generates an image file on disk
     """
     token_classifications = parse_code(code_snippet)
     html_code = HtmlGenerator.generate_code_snippets_image_html(code_snippet, token_classifications)
-    image_file_destination = FileHandler.convert_code_to_image_destination(code_path)
 
-    HtmlGenerator.render_code_snippet_image(html_code, image_file_destination, file_name)
+    temp_html_path = FileHandler.save_file(html_code, "temp", "resources", "html")
+    generate_image_with_selenium(temp_html_path, f"{img_path}/{img_name}")
+    os.remove(temp_html_path)
 
 
 def generate_image_from_manual_input():
@@ -89,7 +119,7 @@ def generate_images_from_folder(preset_folder=None):
         None: Generates image files and opens the containing folder
     """
     folder_path = preset_folder or prompt_for_folder()
-    
+
     if folder_path:
         for file_name in os.listdir(folder_path):
             if (
@@ -113,6 +143,10 @@ def generate_images_from_folder(preset_folder=None):
 
 
 def main():
+    # Start the HTTP server in a separate thread
+    server_thread = threading.Thread(target=run_server, daemon=True)
+    server_thread.start()
+
     while True:
         choice = button_dialog(
             title="Image Generator",

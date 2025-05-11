@@ -10,22 +10,23 @@
     <style>
         html, body {
             font-family: 'Hack', monospace;
-            height: auto; /* Allow the body to size based on content */
-            margin: 0; /* Remove default margin */
-            padding: 0; /* Remove default padding */
-            display: flex; /* Enable flexbox for centering */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            font-size: 16px;
-            background-color: #f8f9fa; /* Optional background color */
-            transform: scale(1.5);
-            transform-origin: center;
+            margin: 0;
+            padding: 0;
+            background-color: transparent;
+            min-height: 100%;
+            width: 100%;
+        }
+
+        body {
+            padding: 20px;
         }
 
         .code-container {
             background-color: #262626;
             padding: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: fit-content;
+            margin: 0 auto;
         }
 
         .code-header {

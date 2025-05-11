@@ -7,20 +7,10 @@ from config.constants import menu_text
 from config.prompts import style
 
 
-def run_blog_generator():
-    # subprocess.run(["python", "cli/blog_generator_cli.py"])
-    blog_generator_cli.main()
-
-
-def run_image_generator():
-    # subprocess.run(["python", "cli/image_generator_cli.py"])
-    image_generator_cli.main()
-
-
 def main():
     choice_map = {
-        "Blog Generator": run_blog_generator,
-        "Image Generator": run_image_generator,
+        "Blog Generator": blog_generator_cli,
+        "Image Generator": image_generator_cli.main,
         "Exit": exit,
     }
 

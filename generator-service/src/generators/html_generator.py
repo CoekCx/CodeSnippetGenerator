@@ -2,8 +2,11 @@ import os
 
 import pyperclip
 from blessed import Terminal
+
+from api.renderer_service import RendererService
 from config.constants import TOKEN_COLORS_ANSI
 from config.prompts import print_success
+from config.settings import Settings
 from core.token_combiners import combine_string_tokens, combine_comment_tokens
 from core.tokenizer import tokenize
 
@@ -96,9 +99,9 @@ class HtmlGenerator:
             code_snippet, token_classifications, True
         )
 
-        current_dir = os.getcwd()[:-4]
-        template_path = os.path.join(current_dir, "resources/template.html")
-        font_path = os.path.join(current_dir, "resources/fonts/Hack-Regular.ttf")
+        current_dir = os.getcwd()
+        template_path = os.path.join(current_dir, "resources/template.html").replace("\\", "/")
+        font_path = os.path.join(current_dir, "resources/fonts/Hack-Regular.ttf").replace("\\", "/")
 
         with open(template_path, "r", encoding="utf-8") as file:
             html_code = file.read()
@@ -108,6 +111,32 @@ class HtmlGenerator:
         )
 
         return html_code
+
+    @staticmethod
+    def render_code_snippet_image(
+            html_code: str,
+            dest_path: str = "snippets",
+            filename: str = "code_snippet.png"
+    ) -> dict:
+        """
+        Renders a code snippet as an image using the external renderer service.
+        
+        Args:
+            html_code (str): The html code to render as an image
+            dest_path (str, optional): The destination folder path. Defaults to "snippets".
+            filename (str, optional): The filename for the image. Defaults to "code_snippet.png".
+                
+        Returns:
+            dict: Response from the renderer service with image path information
+        """
+        if not filename.lower().endswith('.png'):
+            filename = os.path.splitext(filename)[0] + '.png'
+
+        renderer = RendererService()
+        result = renderer.convert_html_to_image(html_code, dest_path, filename)
+
+        print_success(f"\n\nImage successfully generated at: {result.get('path')}")
+        return result
 
     @staticmethod
     def generate_blog_html(

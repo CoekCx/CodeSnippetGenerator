@@ -14,6 +14,20 @@ class FileHandler:
     """
 
     @staticmethod
+    def convert_code_to_image_destination(code_file_destination: str) -> str:
+        """
+        Converts a code file destination path to its corresponding image destination path.
+
+        Args:
+            code_file_destination (str): The path to the code file
+
+        Returns:
+            str: The path to the image directory, which is a sibling 'Images' directory
+                 at the same level as the code file
+        """
+        return os.path.split(code_file_destination)[0] + "/Images"
+
+    @staticmethod
     def get_latest_post_folder() -> Optional[str]:
         """
         Get the latest LinkedIn post folder from the given base path.

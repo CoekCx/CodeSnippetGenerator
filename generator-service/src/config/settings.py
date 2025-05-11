@@ -10,16 +10,20 @@ class Settings:
     """
 
     def __init__(self):
-        # Load the .env file from the project root
         dotenv_path = os.path.join(os.getcwd(), '.env')
+        if not os.path.exists(dotenv_path):
+            parent_dotenv_path = os.path.join(os.path.dirname(os.getcwd()), '.env')
+            if os.path.exists(parent_dotenv_path):
+                dotenv_path = parent_dotenv_path
+
         load_dotenv(dotenv_path)
 
-        # Required environment variables - app will stop if any are missing
         required_vars = [
+            "LINKEDIN_POSTS_PATH",
             "BLOG_POSTS_PATH",
             "OUTPUT_PATH",
-            "LINKEDIN_POSTS_PATH",
-            "LINKEDIN_BLOG_POSTS_PATH"
+            "SERVER_PORT",
+            "RENDERER_SERVICE_URL"
         ]
 
         missing_vars = []
@@ -36,7 +40,11 @@ class Settings:
         self.output_path = os.getenv("OUTPUT_PATH")
         self.server_port = int(os.getenv("SERVER_PORT", "55003"))
         self.linkedin_posts_path = os.getenv("LINKEDIN_POSTS_PATH")
-        self.linkedin_blog_posts_path = os.getenv("LINKEDIN_BLOG_POSTS_PATH")
+        self.renderer_service_url = os.getenv("RENDERER_SERVICE_URL", 'http://localhost:3000')
+
+        # In Docker, use the container service name for renderer
+        if os.environ.get('DOCKER_ENV') == 'true':
+            self.renderer_service_url = 'http://renderer-service:3000'
 
     @classmethod
     def load(cls) -> "Settings":
