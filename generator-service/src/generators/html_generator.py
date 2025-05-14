@@ -101,7 +101,7 @@ class HtmlGenerator:
         )
 
         current_dir = os.getcwd()
-        template_path = os.path.join(current_dir, "resources/template.html").replace("\\", "/")
+        template_path = os.path.join(current_dir, "resources/snippet_template.html").replace("\\", "/")
         font_path = os.path.join(current_dir, "resources/fonts/Hack-Regular.ttf").replace("\\", "/")
 
         with open(template_path, "r", encoding="utf-8") as file:

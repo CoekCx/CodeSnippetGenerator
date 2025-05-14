@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Styled Benchmark Table</title>
+    <style>
+        body {
+            font-family: 'Consolas', monospace;
+            background-color: #1E1E1E;
+            color: #D4D4D4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            text-align: right;
+            border: 1px solid #3C3C3C;
+        }
+
+        th {
+            background-color: #2D2D2D;
+            text-align: center;
+            color: #dcdcdc;
+        }
+
+        .method {
+            text-align: left;
+            color: #56a8f5;
+        }
+
+        u {
+            text-decoration: none;
+            color: #dcdcdc;
+            position: relative;
+        }
+
+        u::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            height: 2.75px;
+            background-color: #ed1c24;
+            border-radius: 1.25px;
+        }
+
+        th, td {
+            width: 0;
+            min-width: 0;
+        }
+
+        th {
+            white-space: nowrap;
+        }
+
+        td {
+            white-space: nowrap;
+            color: #dcdcdc;
+        }
+    </style>
+</head>
+<body>
+{{TABLE_CODE}}
+</body>
+</html>

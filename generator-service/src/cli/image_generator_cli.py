@@ -2,6 +2,7 @@ import os
 
 from prompt_toolkit.shortcuts import button_dialog
 
+from cli.benchmark_cli import process_benchmark_table
 from config.constants import menu_text
 from config.prompts import (
     prompt_for_code_snippet,
@@ -12,13 +13,14 @@ from config.prompts import (
     style,
 )
 from core.code_classifier import parse_code
+from generators.benchmark_html_generator import BenchmarkHtmlGenerator
 from generators.html_generator import HtmlGenerator
 from utils.file_handler import FileHandler
 
 
 def generate_image_logic(code_snippet: str, file_name: str, code_path: str):
     """
-    Generates an image from a code snippet.
+    Generates an image from a code snippet or benchmark results.
     
     Args:
         code_snippet (str): The source code to convert to an image
@@ -28,10 +30,14 @@ def generate_image_logic(code_snippet: str, file_name: str, code_path: str):
     Returns:
         None: The function generates an image file on disk
     """
-    token_classifications = parse_code(code_snippet)
-    html_code = HtmlGenerator.generate_code_snippets_image_html(code_snippet, token_classifications)
-    image_file_destination = FileHandler.convert_code_to_image_destination(code_path)
+    if file_name.endswith('.txt'):
+        benchmark_table = process_benchmark_table(code_snippet)
+        html_code = BenchmarkHtmlGenerator.generate_benchmark_html(benchmark_table)
+    else:
+        token_classifications = parse_code(code_snippet)
+        html_code = HtmlGenerator.generate_code_snippets_image_html(code_snippet, token_classifications)
 
+    image_file_destination = FileHandler.convert_code_to_image_destination(code_path)
     HtmlGenerator.render_code_snippet_image(html_code, image_file_destination, file_name)
 
 
@@ -89,7 +95,7 @@ def generate_images_from_folder(preset_folder=None):
         None: Generates image files and opens the containing folder
     """
     folder_path = preset_folder or prompt_for_folder()
-    
+
     if folder_path:
         for file_name in os.listdir(folder_path):
             if (
