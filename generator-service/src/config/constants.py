@@ -38,30 +38,23 @@ DELIMITERS = [
 
 # Token classification constants
 TOKEN_CLASS_NAME = "class-name"
+TOKEN_INTERFACE = "interface"
 TOKEN_METHOD = "method"
+TOKEN_PROPERTY = "property"
 TOKEN_VARIABLE = "variable"
 TOKEN_KEYWORD = "keyword"
 TOKEN_NUMBER = "number"
 TOKEN_COMMENT = "comment"
 TOKEN_STRING = "string"
 TOKEN_BLANK = ""
-
-# RGB color values for syntax highlighting in code snippets
-TOKEN_COLORS_RGB = {
-    TOKEN_CLASS_NAME: (193, 145, 255),
-    TOKEN_METHOD: (57, 204, 155),
-    TOKEN_VARIABLE: (102, 195, 204),
-    TOKEN_KEYWORD: (104, 148, 234),
-    TOKEN_NUMBER: (237, 148, 192),
-    TOKEN_COMMENT: (133, 196, 108),
-    TOKEN_STRING: (200, 161, 98),
-    TOKEN_BLANK: (189, 189, 189),
-}
+BACKGROUND_COLOR = ""
 
 TOKEN_COLORS_ANSI = {
     "class-name": 141,
+    "interface": 141,
     "method": 79,
-    "variable": 110,
+    "property": 110,
+    "variable": 231,
     "keyword": 104,
     "number": 218,
     "comment": 108,
@@ -71,7 +64,9 @@ TOKEN_COLORS_ANSI = {
 
 TOKEN_TYPES = [
     "class-name",
+    "interface",
     "method",
+    "property",
     "variable",
     "keyword",
     "comment",

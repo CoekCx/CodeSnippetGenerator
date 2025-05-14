@@ -9,7 +9,7 @@ from config.prompts import style
 
 def main():
     choice_map = {
-        "Blog Generator": blog_generator_cli,
+        "Blog Generator": blog_generator_cli.main,
         "Image Generator": image_generator_cli.main,
         "Exit": exit,
     }

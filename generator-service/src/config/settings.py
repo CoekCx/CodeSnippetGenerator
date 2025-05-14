@@ -3,6 +3,8 @@ import sys
 
 from dotenv import load_dotenv
 
+from config.syntax_presets import SyntaxPresets
+
 
 class Settings:
     """
@@ -23,7 +25,9 @@ class Settings:
             "BLOG_POSTS_PATH",
             "OUTPUT_PATH",
             "SERVER_PORT",
-            "RENDERER_SERVICE_URL"
+            "RENDERER_SERVICE_URL",
+            "BLOG_MODE",
+            "SYNTAX_PRESET"
         ]
 
         missing_vars = []
@@ -41,6 +45,8 @@ class Settings:
         self.server_port = int(os.getenv("SERVER_PORT", "55003"))
         self.linkedin_posts_path = os.getenv("LINKEDIN_POSTS_PATH")
         self.renderer_service_url = os.getenv("RENDERER_SERVICE_URL", 'http://localhost:3000')
+        self.blog_mode = os.getenv("BLOG_MODE", "False").lower() == "true"
+        self.syntax_preset = SyntaxPresets[os.getenv("SYNTAX_PRESET")]
 
         # In Docker, use the container service name for renderer
         if os.environ.get('DOCKER_ENV') == 'true':

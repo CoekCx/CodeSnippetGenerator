@@ -7,6 +7,7 @@ from api.renderer_service import RendererService
 from config.constants import TOKEN_COLORS_ANSI
 from config.prompts import print_success
 from config.settings import Settings
+from config.syntax_presets import SyntaxPresets
 from core.token_combiners import combine_string_tokens, combine_comment_tokens
 from core.tokenizer import tokenize
 
@@ -106,9 +107,10 @@ class HtmlGenerator:
         with open(template_path, "r", encoding="utf-8") as file:
             html_code = file.read()
 
-        html_code = html_code.replace("{{FONT_PATH}}", font_path).replace(
-            "{{CODE_SNIPPET}}", code_snippet_html
-        )
+        html_code = (html_code
+                     .replace("{{FONT_PATH}}", font_path)
+                     .replace("{{CODE_SNIPPET}}", code_snippet_html)
+                     .replace("{{CSS_CODE}}", SyntaxPresets.generate_css(Settings.load().syntax_preset)))
 
         return html_code
 

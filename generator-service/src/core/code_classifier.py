@@ -2,6 +2,7 @@ import re
 
 from config.constants import *
 from config.regex_patterns import *
+from config.settings import Settings
 
 
 def get_tokens(code: str) -> set[str]:
@@ -37,6 +38,7 @@ def parse_code(code: str) -> dict[str, str]:
         dict[str, str]: Mapping of tokens to classification types (keyword,
         class-name, method, variable, number, string, comment)
     """
+    blog_mode = Settings().load().blog_mode
     tokens = set(get_tokens(code))
 
     keywords = [kw for kw in C_SHARP_KEYWORDS if kw in tokens]
@@ -53,9 +55,13 @@ def parse_code(code: str) -> dict[str, str]:
             domains.add(domain)
 
     classes = set(re.findall(CLASS_NAMES_PATTERN, code))
+    
+    interfaces = set(re.findall(INTERFACE_NAMES_PATTERN, code))
 
     methods = set(re.findall(METHODS_PATTERN, code))
     methods = set([method.split("(")[0] for method in methods])
+    
+    variables = set(re.findall(VARIABLE_NAMES_PATTERN, code))
 
     generic_methods = set(re.findall(GENERIC_METHODS_PATTERN, code))
 
@@ -91,6 +97,8 @@ def parse_code(code: str) -> dict[str, str]:
 
     interpolated_strings = set(re.findall(INTERPOLATED_STRING_EXPRESSIONS_PATTERN, code))  # TODO: Fix this
 
+    multiline_strings = set(re.findall(MULTILINE_STRING_PATTERN, code))
+
     comments = set(re.findall(COMMENTS_PATTERN, code))
 
     region_names = set(re.findall(REGION_NAME_PATTERN, code))  # TODO: Fix this
@@ -101,21 +109,29 @@ def parse_code(code: str) -> dict[str, str]:
     for cls in classes:
         token_classifications[cls] = TOKEN_CLASS_NAME
 
+    # Interfaces
+    for interface in interfaces:
+        token_classifications[interface] = TOKEN_INTERFACE if not blog_mode else TOKEN_CLASS_NAME
+
     # Methods
     for method in methods:
         token_classifications[method] = TOKEN_METHOD
 
+    # Variables
+    for variable in variables:
+        token_classifications[variable] = TOKEN_VARIABLE if not blog_mode else TOKEN_BLANK
+
     # Object initializer properties
     for prop in properties_set:
-        token_classifications[prop] = TOKEN_VARIABLE
+        token_classifications[prop] = TOKEN_PROPERTY if not blog_mode else TOKEN_VARIABLE
 
     # Variable properties
     for prop in variable_properties:
-        token_classifications[prop] = TOKEN_VARIABLE
+        token_classifications[prop] = TOKEN_PROPERTY if not blog_mode else TOKEN_VARIABLE
 
     # Class properties
     for prop in class_properties:
-        token_classifications[prop] = TOKEN_VARIABLE
+        token_classifications[prop] = TOKEN_PROPERTY if not blog_mode else TOKEN_VARIABLE
 
     # Domains (from imports and namespaces)
     for domain in domains:
@@ -141,10 +157,6 @@ def parse_code(code: str) -> dict[str, str]:
     for num in numbers:
         token_classifications[num] = TOKEN_NUMBER
 
-    # Strings
-    for string in strings:
-        token_classifications[f"{string}"] = TOKEN_STRING
-
     # Comments
     for comment in comments:
         token_classifications[f"{comment}\n"] = TOKEN_COMMENT
@@ -156,6 +168,13 @@ def parse_code(code: str) -> dict[str, str]:
     # Keywords
     for keyword in keywords:
         token_classifications[keyword] = TOKEN_KEYWORD
+
+    # Strings
+    for string in strings:
+        token_classifications[f"{string}"] = TOKEN_STRING
+
+    for multiline_string in multiline_strings:
+        token_classifications[f"{multiline_string}"] = TOKEN_STRING
 
     # Interpolated strings
     for interpolated_string in interpolated_strings:

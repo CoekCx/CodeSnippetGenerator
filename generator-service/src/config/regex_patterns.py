@@ -10,6 +10,12 @@ IMPORTS_AND_NAMESPACES_PATTERN = r"(?:using|namespace)\s+([a-zA-Z0-9_.]+);"
 # Pattern to extract class names (not following a dot, and not followed by parentheses)
 CLASS_NAMES_PATTERN = r"(?<![.])\b[A-Z][a-zA-Z]*\b(?!\()"
 
+# Pattern to extract interface names (not following a dot, and not followed by parentheses)
+INTERFACE_NAMES_PATTERN = r"(?<![.])\b[I][A-Z][a-z][a-zA-Z]*\b(?!\()"
+
+# Pattern to extract variable names (starts with lowercase, can be camelCase, no parentheses or < after)
+VARIABLE_NAMES_PATTERN = r"(?<![.])\b[a-z][a-zA-Z0-9]*\b(?!\(|<)"
+
 # Pattern to extract method names
 METHODS_PATTERN = r"\w+\(.*?"
 
@@ -54,3 +60,6 @@ REGION_NAME_PATTERN = r"#region\s+(.+)$"
 
 # Pattern to extract interpolated string expressions
 INTERPOLATED_STRING_EXPRESSIONS_PATTERN = r'\{[^}]*\}'
+
+# Pattern to extract C# multiline string literals (verbatim strings with @"" or raw string literals with """)
+MULTILINE_STRING_PATTERN = r'(@"[\s\S]*?")|("""[\s\S]*?""")'
