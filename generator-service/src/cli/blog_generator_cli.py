@@ -1,5 +1,7 @@
 import os
 
+from prompt_toolkit.shortcuts import button_dialog
+
 from config.constants import menu_text
 from config.prompts import (
     prompt_for_folder,
@@ -12,21 +14,7 @@ from config.prompts import (
 from config.prompts import style
 from core.code_classifier import parse_code
 from generators.html_generator import HtmlGenerator
-from prompt_toolkit.shortcuts import button_dialog
 from utils.file_handler import FileHandler
-
-
-# current_working_directory = os.getcwd()
-# new_working_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# print(f"Current working directory: {current_working_directory}")
-# print(f"New working directory:     {new_working_directory}")
-# input()
-# os.chdir(new_working_directory)
-# try:
-#     from ..config.constants import menu_text
-# except Exception as e:
-#     print(e)
-#     input("Press enter to exit.")
 
 
 def generate_html_file(file_name: str, folder_path: str) -> None:

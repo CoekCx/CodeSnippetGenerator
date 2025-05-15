@@ -2,7 +2,7 @@ import os
 
 from prompt_toolkit.shortcuts import button_dialog
 
-from cli import blog_generator_cli, image_generator_cli
+from cli import blog_generator_cli, image_generator_cli, configuration_cli
 from config.constants import menu_text
 from config.prompts import style
 
@@ -11,6 +11,7 @@ def main():
     choice_map = {
         "Blog Generator": blog_generator_cli.main,
         "Image Generator": image_generator_cli.main,
+        "Configuration": configuration_cli.main,
         "Exit": exit,
     }
 
@@ -21,6 +22,7 @@ def main():
             buttons=[
                 ("Blog\n", "Blog Generator"),
                 ("Image\n", "Image Generator"),
+                ("Configure\n", "Configuration"),
                 ("Exit", "Exit"),
             ],
             style=style,

@@ -159,6 +159,7 @@ def select_benchmark_columns(benchmark_table: BenchmarkTable) -> BenchmarkTable:
         text="Choose which columns to include in the table:",
         values=columns,
         style=style,
+        default_values=[header for header in benchmark_table.headers if header not in ("RatioSD", "Alloc Ratio")],
     ).run()
 
     if not selected_columns:

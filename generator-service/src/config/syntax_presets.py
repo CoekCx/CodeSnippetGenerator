@@ -68,7 +68,7 @@ class SyntaxPresets(Enum):
         pre {
             letter-spacing: 0.25px;
             font-family: 'Hack', monospace;
-            padding: 10px;
+            padding: 5px;
             background-color: #%s;
             color: white;
             overflow: auto;
@@ -134,7 +134,7 @@ rider_preset_colors = {
     TOKEN_INTERFACE: "c19fff",
     TOKEN_METHOD: "39cc9b",
     TOKEN_PROPERTY: "66c3cc",
-    TOKEN_VARIABLE: "bdbdbd",
+    TOKEN_VARIABLE: "ffffff",
     TOKEN_KEYWORD: "6c95eb",
     TOKEN_COMMENT: "85c46c",
     TOKEN_STRING: "c9a26d",
