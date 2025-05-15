@@ -89,15 +89,15 @@ app.post('/convert', async (req, res) => {
         }
         console.log('Element dimensions:', boundingBox);
 
-        // Add padding and ensure we capture the full element
-        const padding = 4; // Increased padding
+        // Remove padding completely
+        const padding = 0;
         const screenshotOptions = {
             path: fullFilePath,
             clip: {
-                x: Math.max(0, boundingBox.x - padding),
-                y: Math.max(0, boundingBox.y - padding),
-                width: boundingBox.width + (padding * 2),
-                height: boundingBox.height + (padding * 2)
+                x: boundingBox.x,
+                y: boundingBox.y,
+                width: boundingBox.width,
+                height: boundingBox.height
             },
             omitBackground: true // Make background transparent
         };
