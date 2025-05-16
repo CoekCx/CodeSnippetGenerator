@@ -1,5 +1,7 @@
 # Code Snippet Generator
 
+![Code Snippet Generator](/resources/Code%20Snippet%20Generator.png)
+
 A system for generating syntax-highlighted code snippets as images, using a dual-service architecture:
 
 - **Generator Service**: A Python service that tokenizes code and prepares HTML
