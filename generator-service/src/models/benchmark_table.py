@@ -44,6 +44,7 @@ class BenchmarkRow:
     
     Attributes:
         method (Optional[BenchmarkCell]): Cell containing the method name.
+        runtime (Optional[BenchmarkCell]): Cell containing the runtime value.
         mean (Optional[BenchmarkCell]): Cell containing the mean value.
         error (Optional[BenchmarkCell]): Cell containing the error value.
         std_dev (Optional[BenchmarkCell]): Cell containing the standard deviation.
@@ -55,6 +56,7 @@ class BenchmarkRow:
         alloc_ratio (Optional[BenchmarkCell]): Cell containing allocation ratio.
     """
     method: Optional[BenchmarkCell] = field(default_factory=lambda: BenchmarkCell(None, "Method", is_method=True))
+    runtime: Optional[BenchmarkCell] = field(default_factory=lambda: BenchmarkCell(None, "Runtime"))
     mean: Optional[BenchmarkCell] = field(default_factory=lambda: BenchmarkCell(None, "Mean"))
     error: Optional[BenchmarkCell] = field(default_factory=lambda: BenchmarkCell(None, "Error"))
     std_dev: Optional[BenchmarkCell] = field(default_factory=lambda: BenchmarkCell(None, "StdDev"))
@@ -87,6 +89,7 @@ class BenchmarkRow:
         """
         return [cell for cell in [
             self.method,
+            self.runtime,
             self.mean,
             self.error,
             self.std_dev,
