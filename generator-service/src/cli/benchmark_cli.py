@@ -159,7 +159,8 @@ def select_benchmark_columns(benchmark_table: BenchmarkTable) -> BenchmarkTable:
         text="Choose which columns to include in the table:",
         values=columns,
         style=style,
-        default_values=[header for header in benchmark_table.headers if header not in ("RatioSD", "Alloc Ratio")],
+        default_values=[header for header in benchmark_table.headers if
+                        header not in ("Median", "RatioSD", "Gen0", "Alloc Ratio")],
     ).run()
 
     if not selected_columns:
@@ -167,27 +168,12 @@ def select_benchmark_columns(benchmark_table: BenchmarkTable) -> BenchmarkTable:
 
     new_rows = []
     for row in benchmark_table.rows:
-        column_values = {
-            "Method": row.method,
-            "Mean": row.mean,
-            "Error": row.error,
-            "StdDev": row.std_dev,
-            "Ratio": row.ratio,
-            "RatioSD": row.ratio_sd,
-            "Allocated": row.allocated,
-            "Alloc Ratio": row.alloc_ratio
-        }
+        new_row = BenchmarkRow()
+        for header in selected_columns:
+            cell = row.get_cell_by_header(header)
+            if cell is not None and cell != BenchmarkRow.header_not_found:
+                new_row.get_cell_by_header(header).value = cell.value
 
-        new_row = BenchmarkRow(
-            method=column_values["Method"],
-            mean=column_values["Mean"],
-            error=column_values["Error"],
-            std_dev=column_values["StdDev"],
-            ratio=column_values["Ratio"],
-            ratio_sd=column_values["RatioSD"] if "RatioSD" in selected_columns else None,
-            allocated=column_values["Allocated"] if "Allocated" in selected_columns else None,
-            alloc_ratio=column_values["Alloc Ratio"] if "Alloc Ratio" in selected_columns else None
-        )
         new_rows.append(new_row)
 
     return BenchmarkTable(headers=selected_columns, rows=new_rows)

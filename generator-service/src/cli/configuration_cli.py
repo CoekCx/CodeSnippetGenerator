@@ -4,6 +4,7 @@ from dotenv import load_dotenv, set_key
 from prompt_toolkit.shortcuts import button_dialog
 
 from config.prompts import style, print_success
+from config.settings import Settings
 from config.syntax_presets import SyntaxPresets
 
 
@@ -46,6 +47,7 @@ def main():
         return
 
     update_env_file(choice)
+    Settings.reset()
     print_success(f"Syntax preset set to {choice}!")
 
 

@@ -5,6 +5,47 @@ A system for generating syntax-highlighted code snippets as images, using a dual
 - **Generator Service**: A Python service that tokenizes code and prepares HTML
 - **Renderer Service**: A Node.js service using Puppeteer to convert HTML to images
 
+## Example Output
+
+Here's an example of how the generator creates syntax-highlighted images from C# code:
+
+```csharp
+private async Task<IResult> Handler(ISqlConnectionFactory connectionFactory)
+{
+    using var connection = connectionFactory.OpenConnection();
+
+    var orders = await connection.QueryAsync<Order>(
+        "SELECT * FROM \"Orders\"");
+
+    return Results.Ok(orders);
+}
+```
+
+The code above generates different outputs depending on the IDE theme:
+
+### Visual Studio Theme
+![Visual Studio Theme](resources/snippet-1-visual-studio.png)
+
+### Rider Theme
+![Rider Theme](resources/snippet-1-rider.png)
+
+## Benchmark Table Image Generation
+
+The generator can also create images from .NET benchmark result tables (such as those produced by BenchmarkDotNet). For example, given a benchmark table in plain text:
+
+| Method     | Mean      | Error     | StdDev    | Ratio        | RatioSD | Allocated | Alloc Ratio |
+|----------- |----------:|----------:|----------:|-------------:|--------:|----------:|------------:|
+| All        | 47.022 us | 0.5806 us | 0.5147 us |     baseline |         |      40 B |             |
+| TrueForAll |  9.149 us | 0.1194 us | 0.1058 us | 5.14x faster |   0.08x |         - |          NA |
+
+The generator will produce an image of the formatted benchmark table, like this:
+
+![Benchmark Graph](resources/benchmark.png)
+
+When working with benchmark tables, the UI allows you to customize the output image:
+- **Column Selection**: You can choose which columns from the benchmark table to include in the generated image, so only the data you care about is shown.
+- **Cell Underlining**: The UI also lets you underline any specific cell(s) in the table, making it easy to highlight important results or comparisons directly in the image.
+
 ## Setup
 
 ### Environment Configuration

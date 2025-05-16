@@ -1,0 +1,4 @@
+| Method     | Mean      | Error     | StdDev    | Ratio        | RatioSD | Allocated | Alloc Ratio |
+|----------- |----------:|----------:|----------:|-------------:|--------:|----------:|------------:|
+| All        | 47.022 us | 0.5806 us | 0.5147 us |     baseline |         |      40 B |             |
+| TrueForAll |  9.149 us | 0.1194 us | 0.1058 us | 5.14x faster |   0.08x |         - |          NA |

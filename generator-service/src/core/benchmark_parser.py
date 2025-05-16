@@ -1,6 +1,6 @@
 from typing import List
 
-from models.benchmark_table import BenchmarkCell, BenchmarkRow, BenchmarkTable
+from models.benchmark_table import BenchmarkRow, BenchmarkTable
 
 
 def parse_benchmark_table(content: str) -> BenchmarkTable:
@@ -23,25 +23,12 @@ def parse_benchmark_table(content: str) -> BenchmarkTable:
     for line in lines[2:]:
         cells = [cell.strip() for cell in line.split('|')[1:-1]]
 
-        method = BenchmarkCell(value=cells[0], column_name=headers[0], is_method=True)
-        mean = BenchmarkCell(value=cells[1], column_name=headers[1])
-        error = BenchmarkCell(value=cells[2], column_name=headers[2])
-        std_dev = BenchmarkCell(value=cells[3], column_name=headers[3])
-        ratio = BenchmarkCell(value=cells[4], column_name=headers[4])
-        ratio_sd = BenchmarkCell(value=cells[5], column_name=headers[5])
-        allocated = BenchmarkCell(value=cells[6], column_name=headers[6])
-        alloc_ratio = BenchmarkCell(value=cells[7], column_name=headers[7])
+        row = BenchmarkRow()
+        for cell, header in zip(cells, headers):
+            row_cell = row.get_cell_by_header(header)
+            if row_cell != BenchmarkRow.header_not_found:
+                row_cell.value = cell
 
-        row = BenchmarkRow(
-            method=method,
-            mean=mean,
-            error=error,
-            std_dev=std_dev,
-            ratio=ratio,
-            ratio_sd=ratio_sd,
-            allocated=allocated,
-            alloc_ratio=alloc_ratio
-        )
         rows.append(row)
 
     return BenchmarkTable(headers=headers, rows=rows)

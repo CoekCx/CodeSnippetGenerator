@@ -67,20 +67,20 @@ def generate_image_from_file(preset_folder=None):
     Returns:
         None: Generates an image file and opens the containing folder
     """
-    file_name, file_path = prompt_for_file(preset_folder)
+    file_name, folder_path = prompt_for_file(preset_folder)
     os.system("cls")
     print_success(f"Generating {file_name}.\n\n")
 
-    file_path = f"{file_path}/{file_name}"
+    file_path = f"{folder_path}/{file_name}"
     code_snippet = FileHandler.read_file(file_path)
     if not code_snippet:
         return
 
-    generate_image_logic(code_snippet, file_name, file_path)
+    generate_image_logic(code_snippet, file_name, folder_path.replace("/", "\\"))
 
     os.system("cls")
     print_success(f"Image successfully generated!")
-    open_folder_in_explorer(os.path.split(file_path)[0] + "/Images")
+    open_folder_in_explorer(os.path.split(folder_path)[0] + "/Images")
 
 
 def generate_images_from_folder(preset_folder=None):
